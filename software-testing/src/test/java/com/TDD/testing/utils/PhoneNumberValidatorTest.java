@@ -3,6 +3,8 @@ package com.TDD.testing.utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -15,42 +17,19 @@ class PhoneNumberValidatorTest {
         underTest = new PhoneNumberValidator();
     }
 
-    @Test
-    void itShouldValidatePhoneNumber(){
+    @ParameterizedTest
+    @CsvSource({"+10000000000,true","+10000000434343000,false","10000000434343000,false"})
+//    @CsvSource({"+20000000000,true"}) //failing test
+    void itShouldValidatePhoneNumber(String phoneNumber, Boolean expected){
         // Given
-        String phoneNumber = "+10000000000";
+//        String phoneNumber = "+10000000000";
 
         // When
         boolean isValid = underTest.test(phoneNumber);
 
         // Then
-        assertThat(isValid).isTrue();
+        assertThat(isValid).isEqualTo(expected);
     }
 
-    @Test
-    @DisplayName("Should fail when legth is Bigger than 13")
-    void itShouldValidatePhoneNumberWhenIncorrectAndHasLengthBiggerThan13(){
-        // Given
-        String phoneNumber = "+10000000434343000";
-
-        // When
-        boolean isValid = underTest.test(phoneNumber);
-
-        // Then
-        assertThat(isValid).isFalse();
-    }
-
-    @Test
-    @DisplayName("Should fail when does not start with +")
-    void itShouldValidatePhoneNumberWhenDoesNotStartWithPlusSign(){
-        // Given
-        String phoneNumber = "10000000434343000";
-
-        // When
-        boolean isValid = underTest.test(phoneNumber);
-
-        // Then
-        assertThat(isValid).isFalse();
-    }
 
 }
